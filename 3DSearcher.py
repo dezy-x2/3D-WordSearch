@@ -55,3 +55,36 @@ def indexesToCheck(x, y, z):
     if y < 2:
         indexes.append([x, y+1, z])
     return indexes
+
+
+possibleWords = getEligibleWords(english)
+
+
+def findWords(puzzle, wordList):
+    foundWords = []
+    for x in range(3):
+        for y in range(3):
+            for z in range(2):
+                results = None
+                words = wordList[binarySearch(wordList, puzzle[x][y][z])]
+                idxToCheck = indexesToCheck(x, y, z)
+                for word in words:
+                    for _x, _y, _z in idxToCheck:
+                        # TODO: need to figure out a solution for moving to the next letter and
+                        for i in range(len(word)):
+                            # TODO: if it does we have to generate the new indexes to check and repeat
+                            # this kinda sucks
+                            results = pokeAround(
+                                [_x, _y, _z], word[i:], puzzle)
+                            if not results:
+                                break
+                        if not results:
+                            break
+                        foundWords.append(word)
+
+
+def pokeAround(coords, word, puzzle):
+    x, y, z = coords
+    if puzzle[x][y][z] == word[0]:
+        return True
+    return False
